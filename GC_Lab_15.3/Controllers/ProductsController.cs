@@ -63,5 +63,35 @@ namespace GC_Lab_15._3.Controllers
 
         }
 
+        [HttpPost]
+        public Object Post(Product p)
+        {
+            SqlConnection connection = null;
+            string queryString = "INSERT INTO Products (ProductID, ProductName, QuantityPerUnit, UnitPrice)";
+            queryString += " VALUES (@ProductID, @ProductName, @QuantityPerUnit, @UnitPrice);";
+            queryString += " SELECT SCOPE_IDENTITY();";
+            int newId;
+
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                newId = connection.ExecuteScalar<int>(queryString, p);
+            }
+            catch (Exception e)
+            {
+                newId = -1;
+
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    connection.Close();
+                }
+            }
+
+            return newId;
+
+        }
     }
 }
