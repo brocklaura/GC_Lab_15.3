@@ -142,5 +142,11 @@ namespace GC_Lab_15._3.Controllers
 
             return orders;
         }
+
+        [HttpPost]
+        public object Post(OrderShipment order)
+        {
+            return new { success = true };
+        }
     }
 }

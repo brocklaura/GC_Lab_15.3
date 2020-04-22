@@ -40,18 +40,26 @@ namespace GC_Lab_15._3.Controllers
         }
 
         [HttpGet("{id}")]
-        public Product GetSingleProduct(int id)
+        public object GetSingleProduct(int id)
         {
+            Product singleProd = null;
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string queryString = "SELECT ";
+                string queryString = "SELECT * ";
                 queryString += "FROM Products ";
+                queryString += "Where ProductID = @ID";
 
-                Product singleProd = conn.Query<Product>(queryString);
+                singleProd = conn.QueryFirstOrDefault<Product>(queryString, new { ID = id });
 
             }
 
-            return id;
+            if (singleProd is null)
+            {
+                return new { success = false };
+            }
+
+            return singleProd;
 
         }
 
