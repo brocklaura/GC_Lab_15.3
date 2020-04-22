@@ -146,7 +146,47 @@ namespace GC_Lab_15._3.Controllers
         [HttpPost]
         public object Post(OrderShipment order)
         {
+            return new { success = "No implemented" };
+        }
+
+        [HttpDelete("{id}")]
+        public object Delete(int id)
+        {
+            int rows = 0;
+
+            try
+            {
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string queryString = "delete ";
+                    queryString += "From[Order Details] ";
+                    queryString += "where OrderID = @OrderID ";
+                    queryString += "delete ";
+                    queryString += "from Orders ";
+                    queryString += "where OrderID = @OrderID; ";
+
+                    rows = conn.Execute(queryString, new { OrderID = id });
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("V**************************************************V");
+                Console.WriteLine(e);
+                Console.WriteLine("|**************************************************|");
+                Console.WriteLine(e.Message); ;
+                Console.WriteLine("^**************************************************^");
+            }
+
+            if (rows == 0)
+            {
+                return new { success = false };
+            }
+
             return new { success = true };
         }
+
+
     }
 }
